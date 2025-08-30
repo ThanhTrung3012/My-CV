@@ -1,3 +1,26 @@
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+#translateBtn {
+    font-size: 0.95rem;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-left: 16px;
+    background: linear-gradient(45deg, #00ffff, #0066cc);
+    color: #000;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,255,255,0.08);
+    transition: all 0.2s;
+    cursor: pointer;
+    font-weight: 500;
+}
+#translateBtn:hover {
+    background: linear-gradient(45deg, #0066cc, #00ffff);
+    color: #fff;
+    transform: scale(0.98);
+}
 
 /* Gradient text for subtitle */
 .gradient-text {
@@ -147,8 +170,11 @@
  }
 
  .profile-container {
-     position: relative;
-     margin-bottom: 40px;
+    position: relative;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
  }
 
  .profile-image {
@@ -189,7 +215,31 @@
      box-shadow:
          0 0 30px rgba(0, 255, 255, 0.3),
          inset 0 0 30px rgba(0, 255, 255, 0.1);
+    pointer-events: none;   /* NEW: không chặn hover/click */
+    z-index: 0; 
  }
+/* Zoom khi hover & focus (hỗ trợ bàn phím) */
+.img-profile:hover,
+.img-profile:focus,
+.img-profile:focus-visible {
+    transform: scale(1.18);
+    box-shadow: 0 8px 48px rgba(0,255,255,0.25);
+    outline: none;              /* tránh viền xanh mặc định */
+}
+
+/* Click/tap để giữ phóng to (JS sẽ toggle class này) */
+.img-profile.zoom-locked {
+    transform: scale(1.25);
+    box-shadow: 0 10px 60px rgba(0,255,255,0.30);
+    cursor: zoom-out;
+}
+
+/* Tôn trọng người dùng giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+    .img-profile {
+        transition: none;
+    }
+}
 
  @keyframes rotate {
      from {
@@ -209,6 +259,7 @@
  }
 
 /* Profile image alignment and style */
+/* Profile image alignment and style (đã sửa) */
 .img-profile {
     width: 180px;
     height: 180px;
@@ -216,9 +267,20 @@
     border-radius: 50%;
     display: block;
     margin: 0 auto;
+
+    /* thêm để zoom mượt & đúng lớp phủ */
+    position: relative;          /* giúp z-index hoạt động */
+    z-index: 1;                  /* nằm trên ::after của .profile-image */
+    transition: transform .25s ease, box-shadow .25s ease;
+    transform-origin: center center;
+    will-change: transform;
+    cursor: zoom-in;
+
+    /* style có sẵn */
     box-shadow: 0 4px 24px rgba(0,255,255,0.15);
     border: 4px solid #00ffff;
 }
+
 
  .hero-title {
      font-size: 4rem;
